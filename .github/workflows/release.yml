@@ -16,6 +16,11 @@ on:
 permissions:
   contents: read
 
+env:
+  DOTNET_CLI_TELEMETRY_OPTOUT: '1'
+  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: '1'
+  DOTNET_NOLOGO: '1'
+
 jobs:
   build:
     runs-on: windows-2025
@@ -41,6 +46,8 @@ jobs:
         run: |
           $ErrorActionPreference = 'Stop'
           $deps = Get-Content ci/dependencies.json -Raw | ConvertFrom-Json
+          # setup-dotnet installs an SDK; global.json also forces its selection.
+          @{ sdk = @{ version = $deps.dotnetSdk; rollForward = 'disable'; allowPrerelease = $false } } | ConvertTo-Json -Depth 3 | Set-Content global.json -Encoding utf8NoBOM
           if ((dotnet --version).Trim() -ne $deps.dotnetSdk) { throw 'SDK version mismatch.' }
           dotnet --info
           $refs = Join-Path $env:GITHUB_WORKSPACE 'Refs'
@@ -102,3 +109,4 @@ jobs:
             exit 1
           fi
           gh release create "$tag" release-assets/* --target "$GITHUB_SHA" --title "Steam Song Presence ${tag} — Beat Saber 1.40.8" --notes-file RELEASE.md
+
