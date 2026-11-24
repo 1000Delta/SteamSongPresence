@@ -109,4 +109,3 @@ jobs:
             exit 1
           fi
           gh release create "$tag" release-assets/* --target "$GITHUB_SHA" --title "Steam Song Presence ${tag} — Beat Saber 1.40.8" --notes-file RELEASE.md
-
