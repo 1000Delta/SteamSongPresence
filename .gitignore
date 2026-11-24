@@ -1,0 +1,13 @@
+bin/
+obj/
+tests/bin/
+tests/obj/
+dist/
+.build-home/
+companion/MuSync.exe
+research/**/bin/
+research/**/obj/
+/companion/
+/research/
+/live-*.json
+/steam-playtime-*.json

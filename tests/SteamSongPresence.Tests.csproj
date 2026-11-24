@@ -1,0 +1,15 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <OutputType>Exe</OutputType>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <GameDir Condition="'$(GameDir)' == ''">$(USERPROFILE)\BSManager\BSInstances\1.40.8</GameDir>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\src\PresenceState.cs" Link="PresenceState.cs" />
+    <Compile Include="..\src\LoopbackServer.cs" Link="LoopbackServer.cs" />
+    <Reference Include="Newtonsoft.Json"><HintPath>$(MSBuildToolsPath)\Newtonsoft.Json.dll</HintPath></Reference>
+    <Reference Include="Mono.Cecil"><HintPath>$(GameDir)\Libs\Mono.Cecil.dll</HintPath></Reference>
+  </ItemGroup>
+</Project>
