@@ -12,6 +12,17 @@
 
 示例：`Playing: Medicine [Expert+]`；暂停时为 `Paused: Medicine [Expert+]`。返回菜单后为 `In menus`，不会残留上一首歌。
 
+## 支持版本
+
+本项目目前只构建和维护以下两个目标，GitHub Release 分别提供安装包，BeatMods 也分别登记对应游戏版本：
+
+| Beat Saber | 本项目定位 | 安装包 |
+| --- | --- | --- |
+| 1.40.8 | 推荐版本，适合在 BSManager 中固定使用 | `SteamSongPresence-0.4.0-bs1.40.8.zip` |
+| 1.46.0 | 官方最新版本（2026-11-25 本次验证的 Steam 正式版） | `SteamSongPresence-0.4.0-bs1.46.0.zip` |
+
+推荐版本是本项目的选择，不代表 BeatMods 或 BSMG 官方推荐。两个包使用同一插件版本号，但针对不同游戏 API 分别编译，DLL 不能混用。其他游戏版本暂不支持，也不将这两个目标之间的版本标为兼容。
+
 ## 安装
 
 需要 Windows x64 / Steam、Beat Saber 1.40.8 或 1.46.0、已启用的 BSIPA（1.46.0 需要 4.3.7+）。复用 BSIPA 的 Harmony 和 Newtonsoft.Json，不附带游戏程序集。

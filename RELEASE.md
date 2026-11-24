@@ -2,6 +2,8 @@ Steam song, difficulty and pause status using the existing game session. No extr
 
 **Separate installation packages: Beat Saber 1.40.8 and 1.46.0 / Steam / Windows x64. Do not mix the builds.**
 
+The project supports exactly two game targets: **1.40.8 is the project-recommended version** for a fixed BSManager instance, and **1.46.0 is the official latest version** verified against the Steam public installation on 2026-11-25. This is the project's own recommendation, not an endorsement by BeatMods or BSMG. Other game versions are not currently supported. Both builds share the plugin version number and are registered separately for their respective game versions on BeatMods when submitted.
+
 Download the ZIP matching your game version. In BSManager, choose that **game instance → Mods**, then drag the ZIP onto the page or select **⋮ → Import mods**. Keep the ZIP intact and launch the game after import. BSIPA must already be installed; 1.46.0 requires BSIPA 4.3.7+. After first setting up BSIPA or upgrading a directory, launch to the menu and exit once before importing this plugin.
 
 The ZIP contains only `Plugins/SteamSongPresence.dll`. Do not use the automatically generated Source code archives as installation packages.

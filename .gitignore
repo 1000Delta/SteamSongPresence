@@ -13,3 +13,4 @@ research/**/obj/
 /steam-playtime-*.json
 /Refs/
 /.ci-deps/
+/assets/icon.png

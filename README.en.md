@@ -18,6 +18,8 @@ No additional login or companion application is required. The plugin keeps the o
 
 Windows x64 / Steam / BSIPA. Official and custom song metadata are read from the game. The available builds target different game APIs and are **not interchangeable**.
 
+The project builds and maintains exactly two targets: **1.40.8 is the project-recommended version** for a fixed BSManager instance; **1.46.0 is the official latest version**, as verified against the Steam public installation on 2026-11-25. This recommendation is the project's own choice, not an endorsement by BeatMods or BSMG. Each target has its own installation ZIP and BeatMods submission. Other game versions, including versions between these two targets, are not currently supported. Both builds share the plugin version number.
+
 | Game version | Status |
 | --- | --- |
 | 1.40.8 | Steam rendering, pause, menu clearing and native playtime verified with v0.2.0 |
