@@ -12,8 +12,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\src\PresenceState.cs" Link="PresenceState.cs" />
-    <Compile Include="..\src\LoopbackServer.cs" Link="LoopbackServer.cs" />
-    <Reference Include="Newtonsoft.Json"><HintPath>$(MSBuildToolsPath)\Newtonsoft.Json.dll</HintPath></Reference>
+    <Compile Include="..\src\CallbackGuard.cs" Link="CallbackGuard.cs" />
+    <Compile Include="..\src\SteamPresence.cs" Link="SteamPresence.cs" />
     <Reference Include="Mono.Cecil"><HintPath>$(CecilPath)</HintPath></Reference>
   </ItemGroup>
 </Project>

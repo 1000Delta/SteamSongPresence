@@ -26,6 +26,8 @@ try {
         if (!$resource) { throw 'Embedded manifest is missing.' }
         $embedded = [Text.Encoding]::UTF8.GetString($resource.GetResourceData()) | ConvertFrom-Json
         if ($embedded.version -ne $metadata.version -or $embedded.gameVersion -ne $GameVersion -or $assembly.Name.Version.ToString(3) -ne $metadata.version) { throw 'Package version metadata mismatch.' }
+        if ($assembly.MainModule.GetTypeReferences() | Where-Object { $_.FullName.StartsWith('System.Net.') -or $_.FullName.StartsWith('Newtonsoft.Json.') }) { throw 'Unexpected network/JSON reference in runtime plugin.' }
+        if ($assembly.MainModule.Types | Where-Object { $_.Name -in 'LoopbackServer','ClockPatch' }) { throw 'Obsolete diagnostic code in runtime plugin.' }
     } finally { $assembly.Dispose(); $memory.Dispose() }
 } finally { $zip.Dispose() }
 $referenceDirectories = @((Join-Path $GameDir 'Beat Saber_Data\Managed'),(Join-Path $GameDir 'Libs')) | Where-Object { Test-Path -LiteralPath $_ }
@@ -34,7 +36,7 @@ $references = Get-ChildItem -LiteralPath $referenceDirectories -Filter '*.dll' -
 }
 $buildDependencies = @()
 if ($BsipaDir) {
-    $buildDependencies = @('IPA\Data\Managed\IPA.Loader.dll','IPA\Libs\0Harmony.dll','IPA\Libs\Newtonsoft.Json.dll') | ForEach-Object {
+    $buildDependencies = @('IPA\Data\Managed\IPA.Loader.dll','IPA\Libs\0Harmony.dll') | ForEach-Object {
         [ordered]@{ path = $_.Replace('\','/'); sha256 = (Get-FileHash (Join-Path $BsipaDir $_) -Algorithm SHA256).Hash.ToLowerInvariant() }
     }
 }

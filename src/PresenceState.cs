@@ -1,47 +1,30 @@
 using System;
 using System.Text;
 using System.Text.RegularExpressions;
-using Newtonsoft.Json;
 
 namespace SteamSongPresence;
 
-// Immutable snapshots are passed from Unity's thread to the HTTP worker.
-public sealed class PresenceState
+internal enum PlaybackState { Menu, Playing, Paused }
+
+// Only the song and difficulty needed by Steam are retained, on the main thread.
+internal sealed class PresenceState
 {
-    public string state { get; }
-    public string song { get; }
-    public string artist { get; }
-    public string difficulty { get; }
-    public string characteristic { get; }
-    public bool isCustom { get; }
-    public bool isPlaying => state == "playing";
-    public bool isPaused => state == "paused";
-    public double elapsed { get; }
-    public double duration { get; }
-    public string updatedUtc { get; }
-    // Empty in menus so an external client can clear stale song activity.
-    public string status => state == "menu" ? "" : TextLimit.Normalize(
-        $"Beat Saber · {song} [{difficulty}]" + (isPaused ? " · 暂停" : ""), 128);
-    public string nativeSteamStatus => state == "menu" ? "In menus" : TextLimit.Normalize(
-        $"{(isPaused ? "Paused" : "Playing")}: {song} [{difficulty}]", 255);
+    public static readonly PresenceState Menu = new PresenceState(PlaybackState.Menu, "", "");
+    public PlaybackState State { get; }
+    public string Song { get; }
+    public string Difficulty { get; }
+    public string SteamText { get; }
 
-    public PresenceState(string state = "menu", string song = "", string artist = "",
-        string difficulty = "", string characteristic = "", bool isCustom = false,
-        double elapsed = 0, double duration = 0)
+    private PresenceState(PlaybackState state, string song, string difficulty)
     {
-        this.state = state; this.song = song; this.artist = artist;
-        this.difficulty = difficulty; this.characteristic = characteristic;
-        this.isCustom = isCustom;
-        this.elapsed = Finite(elapsed); this.duration = Finite(duration);
-        updatedUtc = DateTime.UtcNow.ToString("O");
+        State = state; Song = song; Difficulty = difficulty;
+        SteamText = state == PlaybackState.Menu ? "In menus" : TextLimit.Normalize(
+            $"{(state == PlaybackState.Paused ? "Paused" : "Playing")}: {song} [{difficulty}]", 255);
     }
-
-    public PresenceState WithPlayback(bool paused, double position, double length) =>
-        new PresenceState(paused ? "paused" : "playing", song, artist, difficulty,
-            characteristic, isCustom, position, length);
-    public string ToJson() => JsonConvert.SerializeObject(this);
-    private static double Finite(double value) =>
-        double.IsNaN(value) || double.IsInfinity(value) ? 0 : Math.Max(0, value);
+    public static PresenceState ForSong(string song, string difficulty) =>
+        new PresenceState(PlaybackState.Playing, song ?? "", difficulty ?? "");
+    public PresenceState WithPaused(bool paused) => State == PlaybackState.Menu ? this :
+        new PresenceState(paused ? PlaybackState.Paused : PlaybackState.Playing, Song, Difficulty);
 }
 
 internal static class TextLimit

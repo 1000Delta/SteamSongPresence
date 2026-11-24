@@ -12,6 +12,11 @@ on:
         required: true
         type: boolean
         default: false
+      prerelease:
+        description: Mark the release as pre-release while live validation is pending
+        required: true
+        type: boolean
+        default: true
 
 permissions:
   contents: read
@@ -115,6 +120,7 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
+          PRERELEASE: ${{ github.event_name == 'workflow_dispatch' && inputs.prerelease }}
         run: |
           set -euo pipefail
           cd release-assets
@@ -126,4 +132,6 @@ jobs:
             echo 'Tag does not match manifest version' >&2
             exit 1
           fi
-          gh release create "$tag" release-assets/* --target "$GITHUB_SHA" --title "Steam Song Presence ${tag} — Beat Saber 1.40.8 and 1.46.0" --notes-file RELEASE.md
+          release_flags=(--latest)
+          if [[ "$PRERELEASE" == "true" ]]; then release_flags=(--prerelease); fi
+          gh release create "$tag" release-assets/* --target "$GITHUB_SHA" --title "Steam Song Presence ${tag} — Beat Saber 1.40.8 and 1.46.0" --notes-file RELEASE.md "${release_flags[@]}"

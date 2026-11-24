@@ -1,10 +1,10 @@
 # Steam Song Presence
 
-**[Latest release](https://github.com/1000Delta/SteamSongPresence/releases/latest)** · **[Beat Saber 1.40.8](https://github.com/1000Delta/SteamSongPresence/releases/download/v0.4.0/SteamSongPresence-0.4.0-bs1.40.8.zip)** · **[Beat Saber 1.46.0](https://github.com/1000Delta/SteamSongPresence/releases/download/v0.4.0/SteamSongPresence-0.4.0-bs1.46.0.zip)**
+[中文说明](README.md)
 
-[Public build logs](https://github.com/1000Delta/SteamSongPresence/actions/workflows/release.yml) · [Build transparency and security](SECURITY.md)
+[GitHub Releases](https://github.com/1000Delta/SteamSongPresence/releases) · [BeatMods](https://beatmods.com/mods/8110) · [Public build logs](https://github.com/1000Delta/SteamSongPresence/actions/workflows/release.yml)
 
-Show your current Beat Saber song, difficulty and pause state in the **Steam friends list**, using the game's existing Steam session.
+A BSIPA plugin that displays the current Beat Saber song, difficulty and pause state in the Steam friends list. Supports official and custom songs.
 
 ```text
 Playing: Medicine [Expert+]
@@ -12,64 +12,56 @@ Paused: Medicine [Expert+]
 In menus
 ```
 
-No additional login or companion application is required. The plugin keeps the original Beat Saber App ID (620980) and only updates Rich Presence. Steam continues to track the game normally.
+## Supported versions
 
-## Compatibility
+| Beat Saber | Project target | Package |
+| --- | --- | --- |
+| 1.40.8 | Project-recommended version for a fixed BSManager instance | [SteamSongPresence-0.5.0-bs1.40.8.zip](https://github.com/1000Delta/SteamSongPresence/releases/download/v0.5.0/SteamSongPresence-0.5.0-bs1.40.8.zip) |
+| 1.46.0 | Official latest version, verified against the Steam public installation on 2026-11-25 | [SteamSongPresence-0.5.0-bs1.46.0.zip](https://github.com/1000Delta/SteamSongPresence/releases/download/v0.5.0/SteamSongPresence-0.5.0-bs1.46.0.zip) |
 
-Windows x64 / Steam / BSIPA. Official and custom song metadata are read from the game. The available builds target different game APIs and are **not interchangeable**.
+The recommendation is this project's choice. Both targets share a plugin version number and are compiled against their respective game assemblies. Install each package into its matching instance. Current support is limited to these two game versions.
 
-The project builds and maintains exactly two targets: **1.40.8 is the project-recommended version** for a fixed BSManager instance; **1.46.0 is the official latest version**, as verified against the Steam public installation on 2026-11-25. This recommendation is the project's own choice, not an endorsement by BeatMods or BSMG. Each target has its own installation ZIP and BeatMods submission. Other game versions, including versions between these two targets, are not currently supported. Both builds share the plugin version number.
+See [VALIDATION.md](VALIDATION.md) for v0.5.0 live regression and release status.
 
-| Game version | Status |
-| --- | --- |
-| 1.40.8 | Steam rendering, pause, menu clearing and native playtime verified with v0.2.0 |
-| 1.46.0 | Song metadata, Steam presence updates, pause/resume, exit cleanup and native playtime verified with v0.3.1; requires BSIPA 4.3.7+ |
+## Installation
 
-## Install
+Requirements: Windows x64, Steam, the matching Beat Saber version and BSIPA. The 1.40.8 build requires BSIPA 4.3.5+; the 1.46.0 build requires BSIPA 4.3.7+. Harmony is supplied by BSIPA.
 
-1. Close Beat Saber and install a compatible [BSIPA](https://github.com/nike4613/BeatSaber-IPA-Reloaded/releases).
-2. Download the release ZIP for your exact game version.
-3. Extract it into that game's directory so `Plugins/SteamSongPresence.dll` exists.
-4. Launch the selected game instance with Steam signed in.
+1. Close Beat Saber and download the matching installation ZIP.
+2. In BSManager, select that **game instance → Mods**.
+3. Drag the ZIP onto the Mods page, or select **⋮ → Import mods**.
+4. Launch that instance through Steam or BSManager and check its Steam friends status.
 
-For BSManager, install into the instance you actually launch. Remove the DLL while the game is closed to uninstall. Restart the game after replacing the DLL. The plugin uses Harmony and Newtonsoft.Json supplied by BSIPA; it does not bundle game assemblies or other mods.
+For manual installation, extract `Plugins/SteamSongPresence.dll` into the matching game directory. After first installing BSIPA or upgrading a game directory, launch to the menu and exit once before importing this plugin so the loader completes its version migration. Different BSManager instances manage separate plugin directories.
 
-### Import with BSManager
+Use the named game-version installation asset. GitHub's **Source code** archives contain source. See the [official BSManager import guide](https://github.com/Zagrios/bs-manager/wiki/install-mods-on-your-version).
 
-Download the matching release ZIP, select that **game instance → Mods**, and drag the ZIP onto the page. Alternatively, use **⋮ → Import mods** and select the ZIP. Keep the ZIP intact: its `Plugins/SteamSongPresence.dll` layout is supported by BSManager's importer. Launch the game after import so BSIPA applies the pending installation.
+Restart the game after replacing the DLL. To uninstall, close the game and remove `Plugins/SteamSongPresence.dll`.
 
-After first installing BSIPA or upgrading a game directory, launch the game to the menu and exit once before importing this plugin. This lets the loader finish its version migration first. Different BSManager instances have separate plugin directories; install into each instance independently.
+## Implementation
 
-Use the named installation asset, not GitHub's automatically generated **Source code** archives. See the [official BSManager import guide](https://github.com/Zagrios/bs-manager/wiki/install-mods-on-your-version). BSManager does not currently expose a general GitHub-mod installation deep link; this package uses its native ZIP import flow.
+Postfix patches read the song name, difficulty and pause state during game callbacks. Steam Rich Presence uses the current game's Steamworks context and App 620980's published template:
 
-Release assets are compiled, tested, packaged and published by GitHub Actions on clean hosted runners. Local binaries are not uploaded. Per-game build reports, SHA-256 checksums and signed GitHub artifact attestations identify the source revision, workflow, dependency inputs and output hashes.
+```text
+#prelocalizedkey = %pre_localized%
+```
 
-## How it works
+The plugin writes `pre_localized` and `status`, then selects `steam_display=#prelocalizedkey`. A postfix restores the song text after the game's native presence updates. Pending updates are checked every 0.5 seconds; successful unchanged text is deduplicated.
 
-Beat Saber's published Steam localization contains `#prelocalizedkey = %pre_localized%`. The plugin sets `pre_localized` to the song text, selects `steam_display=#prelocalizedkey`, and also supplies the legacy `status` key. It restores these values after the game's native presence updates.
+Game callbacks, Steam updates and independent exit-cleanup stages use exception guards. Repeated failures are reported once per operation until recovery. Search the game's `Logs` directory for `Steam Song Presence`, `Current song` and `Steam friends status updated`. Friend-side visibility depends on Steam client propagation.
 
-The template was confirmed through Steam's public app localization response and the [official Rich Presence Tester](https://steamcommunity.com/dev/testrichpresence). See [Valve's SetRichPresence documentation](https://partner.steamgames.com/doc/api/ISteamFriends#SetRichPresence).
+References: [Valve SetRichPresence](https://partner.steamgames.com/doc/api/ISteamFriends#SetRichPresence), [official Rich Presence Tester](https://steamcommunity.com/dev/testrichpresence).
 
-The plugin does not initialize or shut down Steam, change the App ID, send `GamesPlayed`, alter Steam configuration or fabricate playtime. It has no external network requests. Local status changes are checked every 0.5 seconds; friend visibility also depends on Steam propagation and privacy settings.
+## Build and validation
 
-## Local diagnostics
-
-`http://127.0.0.1:6749/status` is a read-only loopback endpoint containing song, artist, difficulty, characteristic, pause state and progress. It is not needed for Steam display. It binds only to loopback, rejects foreign Host headers, and sends no CORS headers. Other programs running as the local user can read it. A port conflict does not stop Steam updates.
-
-Search the game's `Logs/_latest.log` for `Steam Song Presence`, `Current song` or `Steam friends status updated`. Validation scope and limitations are in [VALIDATION.md](VALIDATION.md).
-
-## Build
-
-Install .NET SDK 6+ and the .NET Framework 4.7.2 targeting pack. Game and BSIPA assemblies must already exist in your selected installation.
+Install .NET SDK 6+ and the .NET Framework 4.7.2 targeting pack:
 
 ```powershell
 ./build.ps1 -GameDir 'C:\Path\To\Beat Saber'
 ```
 
-The script reads the actual game version from Unity assets, selects the appropriate Steamworks reference and game API, embeds a matching manifest, runs the checks, and produces `dist/SteamSongPresence-<version>-bs<game-version>.zip`. The ZIP contains only the plugin DLL under `Plugins`, as required by BeatMods.
+The script detects the game version, selects its references and embeds a matching manifest. Checks cover state transitions, UTF-8 limits, exception isolation, Steam rejection and recovery, forced-refresh retries and game-hook metadata.
 
-The default build target directory is `%USERPROFILE%\BSManager\BSInstances\1.40.8`. The repository's `install.ps1 -GameDir ...` installs a locally built DLL for the detected game version.
+GitHub Actions independently compiles, checks and packages both targets. Each ZIP contains `Plugins/SteamSongPresence.dll`, with a separate build report, SHA-256 checksums and build provenance. Candidates awaiting live validation are marked Pre-release. The same attachments are promoted after validation, followed by BeatMods submission.
 
-## License
-
-[MIT](LICENSE). Beat Saber, Steam, BSIPA and their respective libraries remain the property of their owners. This is an independent community project.
+[Build transparency and security](SECURITY.md) · [Validation scope](VALIDATION.md) · [MIT license](LICENSE)

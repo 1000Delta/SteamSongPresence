@@ -13,4 +13,4 @@ if (Test-Path -LiteralPath $destination) {
 }
 Copy-Item -LiteralPath $source -Destination $destination -Force
 Write-Output "Installed: $destination"
-Write-Output 'Start the selected game instance. Local check: http://127.0.0.1:6749/status'
+Write-Output 'Start the selected game instance and check its Steam friends status.'

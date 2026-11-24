@@ -2,78 +2,70 @@
 
 [English documentation](README.en.md)
 
-**[GitHub Releases](https://github.com/1000Delta/SteamSongPresence/releases/latest)** · **[1.40.8 安装包](https://github.com/1000Delta/SteamSongPresence/releases/download/v0.4.0/SteamSongPresence-0.4.0-bs1.40.8.zip)** · **[1.46.0 安装包](https://github.com/1000Delta/SteamSongPresence/releases/download/v0.4.0/SteamSongPresence-0.4.0-bs1.46.0.zip)**
+[GitHub Releases](https://github.com/1000Delta/SteamSongPresence/releases) · [BeatMods](https://beatmods.com/mods/8110) · [公开构建记录](https://github.com/1000Delta/SteamSongPresence/actions/workflows/release.yml)
 
-[公开构建记录](https://github.com/1000Delta/SteamSongPresence/actions/workflows/release.yml) · [构建流程与安全说明](SECURITY.md)
+游戏内 BSIPA 插件，在 Steam 好友列表显示当前歌曲、难度和暂停状态，支持官方曲和自定义曲。
 
-游戏内 BSIPA 插件，直接在 Steam 好友列表显示当前歌曲、难度和暂停状态，支持官方曲和自定义曲。
-
-**无需额外登录、MuSync、SteamKit 或外部状态程序。** 插件复用游戏已有的 Steam 登录和 App ID 620980，只更新 Rich Presence。不会启动或关闭 Steam、改游戏身份、发送 GamesPlayed、修改 Steam 配置或伪造游玩时长。
-
-示例：`Playing: Medicine [Expert+]`；暂停时为 `Paused: Medicine [Expert+]`。返回菜单后为 `In menus`，不会残留上一首歌。
+```text
+Playing: Medicine [Expert+]
+Paused: Medicine [Expert+]
+In menus
+```
 
 ## 支持版本
 
-本项目目前只构建和维护以下两个目标，GitHub Release 分别提供安装包，BeatMods 也分别登记对应游戏版本：
-
 | Beat Saber | 本项目定位 | 安装包 |
 | --- | --- | --- |
-| 1.40.8 | 推荐版本，适合在 BSManager 中固定使用 | `SteamSongPresence-0.4.0-bs1.40.8.zip` |
-| 1.46.0 | 官方最新版本（2026-11-25 本次验证的 Steam 正式版） | `SteamSongPresence-0.4.0-bs1.46.0.zip` |
+| 1.40.8 | 推荐版本，适合在 BSManager 中固定使用 | [SteamSongPresence-0.5.0-bs1.40.8.zip](https://github.com/1000Delta/SteamSongPresence/releases/download/v0.5.0/SteamSongPresence-0.5.0-bs1.40.8.zip) |
+| 1.46.0 | 官方最新版本（2026-11-25 验证的 Steam 正式版） | [SteamSongPresence-0.5.0-bs1.46.0.zip](https://github.com/1000Delta/SteamSongPresence/releases/download/v0.5.0/SteamSongPresence-0.5.0-bs1.46.0.zip) |
 
-推荐版本是本项目的选择，不代表 BeatMods 或 BSMG 官方推荐。两个包使用同一插件版本号，但针对不同游戏 API 分别编译，DLL 不能混用。其他游戏版本暂不支持，也不将这两个目标之间的版本标为兼容。
+推荐版本是本项目的选择。两个目标使用同一插件版本号，按游戏程序集分别编译，各自安装到对应实例。当前支持范围仅限表中两版。
+
+v0.5.0 的实机回归和发布状态见 [VALIDATION.md](VALIDATION.md)。
 
 ## 安装
 
-需要 Windows x64 / Steam、Beat Saber 1.40.8 或 1.46.0、已启用的 BSIPA（1.46.0 需要 4.3.7+）。复用 BSIPA 的 Harmony 和 Newtonsoft.Json，不附带游戏程序集。
+环境：Windows x64、Steam、对应版本的 Beat Saber 和 BSIPA。1.40.8 需要 BSIPA 4.3.5+；1.46.0 需要 BSIPA 4.3.7+。Harmony 使用 BSIPA 随附版本。
 
-1. 退出 Beat Saber。
-2. 下载对应游戏版本的 ZIP，将其中 `Plugins/SteamSongPresence.dll` 放到**你实际启动的实例**的 `Plugins` 文件夹。
-3. 从 Steam 或 BSManager 启动选定实例，Steam 客户端保持已登录。
+1. 退出 Beat Saber，下载对应游戏版本的安装 ZIP。
+2. 在 BSManager 选择对应的 **游戏实例 → Mods（模组）**。
+3. 将 ZIP 拖入模组页面，或通过 **⋮ → Import mods（导入模组）** 选择 ZIP。
+4. 从 Steam 或 BSManager 启动该实例，检查 Steam 好友列表里的歌曲状态。
 
-### 使用 BSManager 导入
+手动安装时，将 ZIP 中的 `Plugins/SteamSongPresence.dll` 放入对应游戏目录的 `Plugins` 文件夹。
 
-1. 下载上方 Release 的 ZIP 安装包，保留 ZIP 格式。
-2. 在 BSManager 中选择与安装包对应的 **游戏实例 → Mods（模组）**。
-3. 将 ZIP 拖入模组页面，或点击 **⋮ → Import mods（导入模组）** 并选择 ZIP。
-4. 导入完成后启动游戏。BSIPA 会应用待安装的插件。
+首次安装 BSIPA 或升级同一个游戏目录后，先运行到主菜单并退出一次，再导入本插件，让加载器完成版本迁移。BSManager 的不同实例分别管理插件目录。
 
-安装包采用 BSManager 原生支持的 `Plugins/SteamSongPresence.dll` 结构，无需手动解压或运行安装脚本。GitHub 自动生成的 **Source code** ZIP 是源码，请下载名称含有游戏版本的安装包。参考 [BSManager 官方导入说明](https://github.com/Zagrios/bs-manager/wiki/install-mods-on-your-version)。
+下载名称含游戏版本的安装包；GitHub 的 **Source code** 附件用于源码。参考 [BSManager 官方导入说明](https://github.com/Zagrios/bs-manager/wiki/install-mods-on-your-version)。
 
-Release 附件由 GitHub Actions 在全新运行器上从源码编译、测试、打包并发布，不上传本地编译包。每个游戏版本附带独立的构建报告、SHA-256 校验值和 GitHub 构建来源证明，方便核对源码提交、依赖来源与产物。
+更换 DLL 后重新启动游戏。卸载时关闭游戏并移除 `Plugins/SteamSongPresence.dll`。
 
-两个版本使用独立安装包，请勿混用。首次安装 BSIPA 或切换游戏版本后，先运行游戏到主菜单并退出，再导入本插件，避免被加载器的首次版本迁移移入旧插件目录。BSManager 的不同实例分别安装，不会共享插件文件。
+## 实现
 
-实测范围：1.40.8 的歌名、暂停、回菜单和原生时长记录；1.46.0 的歌名、暂停/恢复、退出清理和原生时长记录。详情见 [VALIDATION.md](VALIDATION.md)。
-
-从源码构建后，也可运行 `./install.ps1 -GameDir '你的游戏目录'`。卸载时关闭游戏并移除这一份 DLL。换 DLL 后必须重新启动游戏。
-
-## 原理
-
-Beat Games 已为 App 620980 发布官方动态模板：
+插件在游戏初始化关卡及暂停、恢复时读取歌名、难度和暂停状态，通过当前游戏的 Steamworks 会话更新 Rich Presence。Beat Saber 为 App 620980 发布的动态模板是：
 
 ```text
 #prelocalizedkey = %pre_localized%
 ```
 
-插件先设置 `pre_localized` 为当前歌曲文字，再把 `steam_display` 设为 `#prelocalizedkey`，并更新旧式 `status`。因此直接使用已有 Steam 会话即可在好友列表显示任意歌名。游戏切换场景时会清空 Presence，插件在原生更新后恢复这些键。
+插件填入 `pre_localized` 和 `status`，再选择 `steam_display=#prelocalizedkey`。游戏原生 Presence 更新完成后，插件恢复歌曲文案。每 0.5 秒检查待重试的更新；已经成功发送且文字相同的更新会被合并。
 
-模板于 2026-11-25 通过 Steam 的公开应用本地化响应查询确认，并在官方状态测试页成功渲染。诊断程序不随插件发布。
+Unity 回调、Steam 更新和退出清理使用异常保护。清理按独立步骤执行；重复故障按操作抑制重复日志，成功恢复后重新允许记录新故障。
 
-API 说明：[Valve SetRichPresence](https://partner.steamgames.com/doc/api/ISteamFriends#SetRichPresence)，[官方状态测试页](https://steamcommunity.com/dev/testrichpresence)。好友通常会在 Steam 同步后看到更新。
+日志位于游戏的 `Logs` 目录，搜索 `Steam Song Presence`、`Current song` 和 `Steam friends status updated`。Steam 好友端显示时间取决于客户端同步。
 
-## 本地诊断
+接口资料：[Valve SetRichPresence](https://partner.steamgames.com/doc/api/ISteamFriends#SetRichPresence)、[官方状态测试页](https://steamcommunity.com/dev/testrichpresence)。
 
-`http://127.0.0.1:6749/status` 返回歌曲、作者、难度、模式、暂停状态和进度，每 0.5 秒刷新。只监听本机地址，无写入接口，也不发送 CORS 标头；本机其他程序能够读取。Steam 显示不依赖它，端口占用也不会阻止 Steam 状态更新。
+## 构建与验证
 
-日志路径：游戏 `Logs/_latest.log`，搜索 `Steam Song Presence`。成功发送时有 `Steam friends status updated`。
+安装 .NET SDK 6+ 和 .NET Framework 4.7.2 targeting pack，运行：
 
-## 编译与验证
+```powershell
+./build.ps1 -GameDir '你的游戏目录'
+```
 
-安装 .NET SDK 6+ 和 .NET Framework 4.7.2 targeting pack，运行 `./build.ps1`。可用 `-GameDir` 指向其他 1.40.8 实例。
+构建脚本读取实际游戏版本，选择对应引用并嵌入匹配的 manifest。自动检查覆盖状态转换、UTF-8 长度、异常隔离、Steam 拒绝和恢复、强制刷新重试，以及游戏补丁目标。
 
-构建脚本从 Unity 资源读取真实游戏版本，选择对应 API 并嵌入匹配的 manifest。安装包仅包含 `Plugins/SteamSongPresence.dll`，符合当前 BeatMods ZIP 规范。
+GitHub Actions 在托管运行器上分别编译、检查、打包两个目标。ZIP 仅包含 `Plugins/SteamSongPresence.dll`；每个目标另附构建报告、SHA-256 和构建来源证明。待实机验证的候选包使用 Pre-release 标记，验证相同附件后转为正式发布，再更新 BeatMods。
 
-自动检查覆盖文本字节上限、中文/emoji、无效 UTF-16、控制字符、暂停/恢复、菜单清理、本地 HTTP JSON、并发读取和目标游戏的 Harmony 接口。游戏实测和 Steam 验证见 [VALIDATION.md](VALIDATION.md)。
-
-采用 [MIT 许可证](LICENSE)。
+[构建流程与安全说明](SECURITY.md) · [验证范围](VALIDATION.md) · [MIT 许可证](LICENSE)

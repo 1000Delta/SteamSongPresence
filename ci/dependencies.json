@@ -17,6 +17,6 @@
     "url": "https://github.com/nike4613/BeatSaber-IPA-Reloaded/releases/download/4.3.7/BSIPA-net472-x64.zip",
     "sha256": "899b8a1dda91935bd5c19a211fa48e44e32f7be9ab82b6fc796709c753b7b2bc",
     "file": "IPA/Libs/Mono.Cecil.dll",
-    "purpose": "Explicit build-time IPA, Harmony and JSON references plus metadata inspection in the test runner. The installer is never executed and no dependency is bundled."
+    "purpose": "Explicit build-time IPA and Harmony references plus Mono.Cecil metadata inspection in the test runner."
   }
 }

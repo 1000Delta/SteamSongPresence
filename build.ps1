@@ -7,6 +7,8 @@ param(
 )
 $ErrorActionPreference = 'Stop'
 $GameDir = (Resolve-Path -LiteralPath $GameDir).ProviderPath
+if ($CecilPath) { $CecilPath = (Resolve-Path -LiteralPath $CecilPath).ProviderPath }
+if ($BsipaDir) { $BsipaDir = (Resolve-Path -LiteralPath $BsipaDir).ProviderPath }
 $env:DOTNET_CLI_HOME = Join-Path $PSScriptRoot '.build-home'
 $env:DOTNET_CLI_TELEMETRY_OPTOUT = '1'
 $env:DOTNET_SKIP_FIRST_TIME_EXPERIENCE = '1'
@@ -33,7 +35,8 @@ if ($BsipaDir) {
 dotnet build (Join-Path $PSScriptRoot 'SteamSongPresence.csproj') -c Release --nologo "-p:GameDir=$GameDir" "-p:TargetGameVersion=$gameVersion" "-p:ManifestPath=$manifestPath" "-p:IpaLoaderPath=$ipaLoader" "-p:ModLibDir=$modLibs" "-p:PathMap=$PSScriptRoot=/_/SteamSongPresence" -p:ContinuousIntegrationBuild=true -p:UseSharedCompilation=false -p:RestoreIgnoreFailedSources=true
 if ($LASTEXITCODE -ne 0) { throw 'Plugin build failed.' }
 if (!$CecilPath) { $CecilPath = Join-Path $modLibs 'Mono.Cecil.dll' }
-dotnet run --project (Join-Path $PSScriptRoot 'tests\SteamSongPresence.Tests.csproj') -c Release "-p:GameDir=$GameDir" "-p:TestTargetFramework=$TestTargetFramework" "-p:CecilPath=$CecilPath" -p:UseSharedCompilation=false -- $GameDir
+$pluginDll = Join-Path $PSScriptRoot "bin\Release\bs$gameVersion\SteamSongPresence.dll"
+dotnet run --project (Join-Path $PSScriptRoot 'tests\SteamSongPresence.Tests.csproj') -c Release "-p:GameDir=$GameDir" "-p:TestTargetFramework=$TestTargetFramework" "-p:CecilPath=$CecilPath" -p:UseSharedCompilation=false -- $GameDir $pluginDll
 if ($LASTEXITCODE -ne 0) { throw 'Validation failed.' }
 $stage = Join-Path $PSScriptRoot "dist\bs$gameVersion"
 New-Item -ItemType Directory -Path (Join-Path $stage 'Plugins') -Force | Out-Null
