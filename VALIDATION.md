@@ -10,9 +10,23 @@ Mono.Cecil checks the selected game's patch targets and the compiled plugin. The
 
 Fault-injection checks exercise the same guard and Steam-adapter classes used in the plugin. They do not execute Unity native code or prove compatibility with every other mod. Actual build results and toolchain inputs are recorded by the public Actions runs and per-target BUILDINFO files.
 
-## v0.5.0 live regression
+## v0.5.0 / 1.40.8 live regression — completed
 
-Pending. Both final Actions-built packages must be installed into their matching game instances and checked for song capture, pause, resume, menu clearing, normal exit, native Steam playtime and the absence of the removed listener before formal release and BeatMods submission.
+Installed the 1.40.8 package produced by [Actions run 45468303595](https://github.com/1000Delta/SteamSongPresence/actions/runs/45468303595), source `a13c100a60616ba294fa21750f013517087cd6c9`. Installed DLL SHA-256 matched the build report. The ZIP SHA-256 is `9c6283e65d0c1cf4776919999cd5f7000c60e01a5a1953f43f53b882e7dde7c4`.
+
+- The actual BSManager 1.40.8 instance loaded plugin 0.5.0.0.
+- Consecutive custom-song tests included three different songs. Logs captured Playing, Paused and In menus through song changes.
+- A targeted follow-up captured Playing → Paused → Playing → Paused → In menus, including playback after resuming.
+- The user confirmed the song display and reported the consecutive-song test worked. This is user-observed display evidence; logs separately establish successful API calls.
+- Plugin logs contained no Error/Critical entries. The initial Steam-not-ready warning recovered on retry.
+- Native Steam playtime increased by four minutes across the sessions. After exit, the game process count and Steam App Running flag were zero; port 6749 had no listener.
+- Assembly checks confirmed removal of the HTTP/socket/JSON references and diagnostic server. Runtime state handling and callback error guards also passed automated checks.
+
+## v0.5.0 / 1.46.0 — deferred
+
+The Actions-built candidate loaded, updated the song, paused and resumed, then exited. Native Steam playtime increased by two minutes. A monitor sampled the running game 43 times with zero listeners on port 6749. Plugin logs contained no Error/Critical entries.
+
+The user reported FPFC UI navigation prevented song switching. Menu clearing and consecutive songs therefore remain unverified on this target. Further testing and publication of 1.46.0 were deferred at the user's request. It is outside the current release and BeatMods submission scope.
 
 ## Earlier live evidence
 
@@ -28,4 +42,4 @@ App 620980's published localization response contains `#prelocalizedkey = %pre_l
 
 ## Supported scope
 
-Game targets are 1.40.8 and 1.46.0 only. Multiplayer, spectator modes and all combinations of other mods have not been comprehensively tested. Two directories are used for live regression: a BSManager 1.40.8 instance and the separate Steam 1.46.0 installation.
+The current release target is 1.40.8. Multiplayer, spectator modes and all combinations of other mods have not been comprehensively tested. The deferred 1.46.0 candidate used a separate Steam installation.

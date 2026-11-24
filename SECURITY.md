@@ -19,7 +19,7 @@ The complete workflow is [.github/workflows/release.yml](.github/workflows/relea
 5. Compiles the plugin from source and runs state, fault-injection, Steam-adapter and game-hook metadata checks. References resolve from explicit HintPaths and framework reference directories; SDK and reference sources are explicit.
 6. Creates a ZIP with exactly one entry: `Plugins/SteamSongPresence.dll`. It rejects extra entries and verifies the embedded game/plugin versions against the assembly metadata. ZIP entry timestamps are fixed and compiler paths are normalized.
 7. Records source commit, workflow URL, SDK, runner image, reference commit, dependency hashes and output hashes in a separate `BUILDINFO-bs<game-version>.json` for each build, then generates `SHA256SUMS-bs<game-version>.txt`.
-8. Transfers the verified outputs to a separate publishing job, generates signed GitHub artifact attestations and creates the GitHub Release. Manual candidate releases are marked Pre-release while live validation is pending. The same attachments are promoted after both game targets pass regression, then submitted to BeatMods.
+8. Transfers the verified 1.40.8 outputs to a separate publishing job, generates signed GitHub artifact attestations and creates the GitHub Release. Candidate releases are marked Pre-release while live validation is pending. The same attachments are promoted after regression and submitted to BeatMods. The 1.46.0 build remains a compile-check target while its live validation is deferred.
 
 Third-party Actions are pinned to full commit hashes. The build job has read-only repository permissions. The separate publishing job uses the run-scoped GitHub token with release and attestation permissions; pull-request runs are limited to building and checking. Releases fail if a release with that version already exists.
 
@@ -30,13 +30,13 @@ The release ZIP contains the plugin DLL compiled by that Actions run. Build repo
 Check the public workflow's source commit and successful checks. Compare the ZIP with its matching `SHA256SUMS-bs<game-version>.txt`:
 
 ```powershell
-Get-FileHash ./SteamSongPresence-0.5.0-bs1.46.0.zip -Algorithm SHA256
+Get-FileHash ./SteamSongPresence-0.5.0-bs1.40.8.zip -Algorithm SHA256
 ```
 
 With the official GitHub CLI, verify its build provenance:
 
 ```sh
-gh attestation verify SteamSongPresence-0.5.0-bs1.46.0.zip --repo 1000Delta/SteamSongPresence
+gh attestation verify SteamSongPresence-0.5.0-bs1.40.8.zip --repo 1000Delta/SteamSongPresence
 ```
 
 Checksums establish file integrity. Attestations establish which repository/workflow produced a file; neither replaces code review or guarantees the absence of vulnerabilities.
@@ -47,7 +47,7 @@ Check out the source commit listed in `BUILDINFO-bs<game-version>.json`, install
 
 ```powershell
 $deps = Get-Content ./ci/dependencies.json -Raw | ConvertFrom-Json
-$gameVersion = '1.46.0'
+$gameVersion = '1.40.8'
 $target = $deps.targets.PSObject.Properties[$gameVersion].Value
 git clone --no-checkout --filter=blob:none "https://github.com/$($target.referenceRepository).git" Refs
 git -C Refs checkout --detach $target.referenceCommit

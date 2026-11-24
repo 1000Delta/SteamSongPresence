@@ -17,15 +17,14 @@ In menus
 | Beat Saber | Project target | Package |
 | --- | --- | --- |
 | 1.40.8 | Project-recommended version for a fixed BSManager instance | [SteamSongPresence-0.5.0-bs1.40.8.zip](https://github.com/1000Delta/SteamSongPresence/releases/download/v0.5.0/SteamSongPresence-0.5.0-bs1.40.8.zip) |
-| 1.46.0 | Official latest version, verified against the Steam public installation on 2026-11-25 | [SteamSongPresence-0.5.0-bs1.46.0.zip](https://github.com/1000Delta/SteamSongPresence/releases/download/v0.5.0/SteamSongPresence-0.5.0-bs1.46.0.zip) |
 
-The recommendation is this project's choice. Both targets share a plugin version number and are compiled against their respective game assemblies. Install each package into its matching instance. Current support is limited to these two game versions.
+The recommendation is this project's choice. The current release and BeatMods submission target is 1.40.8.
 
 See [VALIDATION.md](VALIDATION.md) for v0.5.0 live regression and release status.
 
 ## Installation
 
-Requirements: Windows x64, Steam, the matching Beat Saber version and BSIPA. The 1.40.8 build requires BSIPA 4.3.5+; the 1.46.0 build requires BSIPA 4.3.7+. Harmony is supplied by BSIPA.
+Requirements: Windows x64, Steam, Beat Saber 1.40.8 and BSIPA 4.3.5+. Harmony is supplied by BSIPA.
 
 1. Close Beat Saber and download the matching installation ZIP.
 2. In BSManager, select that **game instance → Mods**.
@@ -62,6 +61,6 @@ Install .NET SDK 6+ and the .NET Framework 4.7.2 targeting pack:
 
 The script detects the game version, selects its references and embeds a matching manifest. Checks cover state transitions, UTF-8 limits, exception isolation, Steam rejection and recovery, forced-refresh retries and game-hook metadata.
 
-GitHub Actions independently compiles, checks and packages both targets. Each ZIP contains `Plugins/SteamSongPresence.dll`, with a separate build report, SHA-256 checksums and build provenance. Candidates awaiting live validation are marked Pre-release. The same attachments are promoted after validation, followed by BeatMods submission.
+GitHub Actions compiles, checks and packages the plugin. The current release targets 1.40.8. Its ZIP contains `Plugins/SteamSongPresence.dll`, with a separate build report, SHA-256 checksums and build provenance. The same candidate attachments are used for live validation and formal release, followed by BeatMods submission.
 
 [Build transparency and security](SECURITY.md) · [Validation scope](VALIDATION.md) · [MIT license](LICENSE)
