@@ -1,5 +1,7 @@
 # Steam Song Presence
 
+**[Latest release](https://github.com/1000Delta/SteamSongPresence/releases/latest)** · **[Download for Beat Saber 1.40.8](https://github.com/1000Delta/SteamSongPresence/releases/download/v0.3.0/SteamSongPresence-0.3.0-bs1.40.8.zip)**
+
 Show your current Beat Saber song, difficulty and pause state in the **Steam friends list**, using the game's existing Steam session.
 
 ```text
@@ -27,6 +29,12 @@ Windows x64 / Steam / BSIPA. Official and custom song metadata are read from the
 4. Launch the selected game instance with Steam signed in.
 
 For BSManager, install into the instance you actually launch. Remove the DLL while the game is closed to uninstall. Restart the game after replacing the DLL. The plugin uses Harmony and Newtonsoft.Json supplied by BSIPA; it does not bundle game assemblies or other mods.
+
+### Import with BSManager
+
+Download the versioned release ZIP, select your **1.40.8 instance → Mods**, and drag the ZIP onto that page. Alternatively, use **⋮ → Import mods** and select the ZIP. Keep the ZIP intact: its `Plugins/SteamSongPresence.dll` layout is supported by BSManager's importer. Launch the game after import so BSIPA applies the pending installation.
+
+Use the named installation asset, not GitHub's automatically generated **Source code** archives. See the [official BSManager import guide](https://github.com/Zagrios/bs-manager/wiki/install-mods-on-your-version). BSManager does not currently expose a general GitHub-mod installation deep link; this package uses its native ZIP import flow.
 
 ## How it works
 
