@@ -11,3 +11,5 @@ research/**/obj/
 /research/
 /live-*.json
 /steam-playtime-*.json
+/Refs/
+/.ci-deps/

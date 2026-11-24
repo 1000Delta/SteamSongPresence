@@ -4,6 +4,8 @@
 
 **[下载最新版（GitHub Releases）](https://github.com/1000Delta/SteamSongPresence/releases/latest)** · **[下载 1.40.8 安装包](https://github.com/1000Delta/SteamSongPresence/releases/download/v0.3.0/SteamSongPresence-0.3.0-bs1.40.8.zip)**
 
+[公开构建记录](https://github.com/1000Delta/SteamSongPresence/actions/workflows/release.yml) · [构建流程与安全说明](SECURITY.md)
+
 游戏内 BSIPA 插件，直接在 Steam 好友列表显示当前歌曲、难度和暂停状态，支持官方曲和自定义曲。
 
 **无需额外登录、MuSync、SteamKit 或外部状态程序。** 插件复用游戏已有的 Steam 登录和 App ID 620980，只更新 Rich Presence。不会启动或关闭 Steam、改游戏身份、发送 GamesPlayed、修改 Steam 配置或伪造游玩时长。
@@ -26,6 +28,8 @@
 4. 导入完成后启动游戏。BSIPA 会应用待安装的插件。
 
 安装包采用 BSManager 原生支持的 `Plugins/SteamSongPresence.dll` 结构，无需手动解压或运行安装脚本。GitHub 自动生成的 **Source code** ZIP 是源码，请下载名称含有游戏版本的安装包。参考 [BSManager 官方导入说明](https://github.com/Zagrios/bs-manager/wiki/install-mods-on-your-version)。
+
+Release 附件由 GitHub Actions 在全新运行器上从源码编译、测试、打包并发布，不上传本地编译包。附带 `BUILDINFO.json`、`SHA256SUMS.txt` 和 GitHub 构建来源证明，方便核对源码提交、依赖来源与产物。
 
 支持范围：0.2.0 已实测 Beat Saber 1.40.8，0.3.0 的 1.40.8 构建已通过自动检查；1.46.0 正在适配和实测，完成前不声明支持。不同游戏版本请使用对应安装包。
 

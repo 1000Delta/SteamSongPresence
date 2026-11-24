@@ -8,6 +8,7 @@ Date: 2026-11-25 (Asia/Shanghai).
 - v0.2.0 and the v0.3.0 build for 1.40.8: zero build warnings/errors, 21 checks passed.
 - Checks cover Unicode/UTF-8 limits, malformed UTF-16, control characters, pause/resume state, menu clearing, local HTTP JSON, foreign Host rejection, read-only requests, concurrent snapshots, and the actual Harmony targets in the selected game.
 - State tests and method-existence checks do not substitute for a live game test.
+- The same 21 checks also passed locally against pinned public 1.40.8 reference assemblies, using the official BSIPA Mono.Cecil implementation for the test runner. Package checks confirmed exactly one DLL and matching embedded metadata. The public Actions run separately records its actual result and toolchain.
 
 ## Beat Saber 1.40.8
 

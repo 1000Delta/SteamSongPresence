@@ -5,11 +5,12 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <GameDir Condition="'$(GameDir)' == ''">$(USERPROFILE)\BSManager\BSInstances\1.40.8</GameDir>
+    <CecilPath Condition="'$(CecilPath)' == ''">$(GameDir)\Libs\Mono.Cecil.dll</CecilPath>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\src\PresenceState.cs" Link="PresenceState.cs" />
     <Compile Include="..\src\LoopbackServer.cs" Link="LoopbackServer.cs" />
     <Reference Include="Newtonsoft.Json"><HintPath>$(MSBuildToolsPath)\Newtonsoft.Json.dll</HintPath></Reference>
-    <Reference Include="Mono.Cecil"><HintPath>$(GameDir)\Libs\Mono.Cecil.dll</HintPath></Reference>
+    <Reference Include="Mono.Cecil"><HintPath>$(CecilPath)</HintPath></Reference>
   </ItemGroup>
 </Project>

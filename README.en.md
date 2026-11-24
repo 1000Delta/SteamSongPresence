@@ -2,6 +2,8 @@
 
 **[Latest release](https://github.com/1000Delta/SteamSongPresence/releases/latest)** · **[Download for Beat Saber 1.40.8](https://github.com/1000Delta/SteamSongPresence/releases/download/v0.3.0/SteamSongPresence-0.3.0-bs1.40.8.zip)**
 
+[Public build logs](https://github.com/1000Delta/SteamSongPresence/actions/workflows/release.yml) · [Build transparency and security](SECURITY.md)
+
 Show your current Beat Saber song, difficulty and pause state in the **Steam friends list**, using the game's existing Steam session.
 
 ```text
@@ -35,6 +37,8 @@ For BSManager, install into the instance you actually launch. Remove the DLL whi
 Download the versioned release ZIP, select your **1.40.8 instance → Mods**, and drag the ZIP onto that page. Alternatively, use **⋮ → Import mods** and select the ZIP. Keep the ZIP intact: its `Plugins/SteamSongPresence.dll` layout is supported by BSManager's importer. Launch the game after import so BSIPA applies the pending installation.
 
 Use the named installation asset, not GitHub's automatically generated **Source code** archives. See the [official BSManager import guide](https://github.com/Zagrios/bs-manager/wiki/install-mods-on-your-version). BSManager does not currently expose a general GitHub-mod installation deep link; this package uses its native ZIP import flow.
+
+Release assets are compiled, tested, packaged and published by GitHub Actions on clean hosted runners. Local binaries are not uploaded. `BUILDINFO.json`, `SHA256SUMS.txt` and signed GitHub artifact attestations identify the source revision, workflow, dependency inputs and output hashes.
 
 ## How it works
 
