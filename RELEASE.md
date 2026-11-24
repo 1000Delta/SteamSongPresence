@@ -1,8 +1,10 @@
 Steam song, difficulty and pause status using the existing game session. No extra login or companion application.
 
+This patch restricts assembly resolution to explicit dependency paths and framework references, preventing unrelated DLLs elsewhere in a local working directory from becoming compiler inputs. It retains the source-built release workflow with pinned inputs and build provenance.
+
 **Installation package: Beat Saber 1.40.8 / Steam / Windows x64.**
 
-Download `SteamSongPresence-0.3.0-bs1.40.8.zip` below. In BSManager, choose **1.40.8 → Mods**, then drag the ZIP onto the page or select **⋮ → Import mods**. Keep the ZIP intact and launch the game after import. BSIPA must already be installed. Do not use the automatically generated Source code archives as installation packages.
+Download `SteamSongPresence-0.3.1-bs1.40.8.zip` below. In BSManager, choose **1.40.8 → Mods**, then drag the ZIP onto the page or select **⋮ → Import mods**. Keep the ZIP intact and launch the game after import. BSIPA must already be installed. Do not use the automatically generated Source code archives as installation packages.
 
 The ZIP contains only `Plugins/SteamSongPresence.dll`. It is compiled and packaged from the tagged source by the public **Build and release** GitHub Actions workflow. `BUILDINFO.json` records source, build URL, SDK, pinned references and hashes. `SHA256SUMS.txt` provides integrity checks, and GitHub artifact attestations bind the files to their workflow run.
 

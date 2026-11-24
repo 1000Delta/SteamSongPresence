@@ -5,6 +5,8 @@
     <OutputType>Exe</OutputType>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <EnableDefaultNoneItems>false</EnableDefaultNoneItems>
+    <AssemblySearchPaths>{HintPathFromItem};{TargetFrameworkDirectory};{RawFileName}</AssemblySearchPaths>
     <GameDir Condition="'$(GameDir)' == ''">$(USERPROFILE)\BSManager\BSInstances\1.40.8</GameDir>
     <CecilPath Condition="'$(CecilPath)' == ''">$(GameDir)\Libs\Mono.Cecil.dll</CecilPath>
   </PropertyGroup>

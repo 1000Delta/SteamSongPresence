@@ -1,6 +1,6 @@
 # Steam Song Presence
 
-**[Latest release](https://github.com/1000Delta/SteamSongPresence/releases/latest)** · **[Download for Beat Saber 1.40.8](https://github.com/1000Delta/SteamSongPresence/releases/download/v0.3.0/SteamSongPresence-0.3.0-bs1.40.8.zip)**
+**[Latest release](https://github.com/1000Delta/SteamSongPresence/releases/latest)** · **[Download for Beat Saber 1.40.8](https://github.com/1000Delta/SteamSongPresence/releases/download/v0.3.1/SteamSongPresence-0.3.1-bs1.40.8.zip)**
 
 [Public build logs](https://github.com/1000Delta/SteamSongPresence/actions/workflows/release.yml) · [Build transparency and security](SECURITY.md)
 
@@ -21,7 +21,7 @@ Windows x64 / Steam / BSIPA. Official and custom song metadata are read from the
 | Game version | Status |
 | --- | --- |
 | 1.40.8 | v0.2.0 tested in game; Steam rendering, pause, menu clearing and native playtime verified |
-| 1.46.0 | v0.3.0 compatibility work and live testing in progress; not yet declared supported |
+| 1.46.0 | v0.3.1 compatibility work and live testing in progress; not yet declared supported |
 
 ## Install
 

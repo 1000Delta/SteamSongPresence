@@ -2,7 +2,7 @@
 
 [English documentation](README.en.md)
 
-**[下载最新版（GitHub Releases）](https://github.com/1000Delta/SteamSongPresence/releases/latest)** · **[下载 1.40.8 安装包](https://github.com/1000Delta/SteamSongPresence/releases/download/v0.3.0/SteamSongPresence-0.3.0-bs1.40.8.zip)**
+**[下载最新版（GitHub Releases）](https://github.com/1000Delta/SteamSongPresence/releases/latest)** · **[下载 1.40.8 安装包](https://github.com/1000Delta/SteamSongPresence/releases/download/v0.3.1/SteamSongPresence-0.3.1-bs1.40.8.zip)**
 
 [公开构建记录](https://github.com/1000Delta/SteamSongPresence/actions/workflows/release.yml) · [构建流程与安全说明](SECURITY.md)
 
@@ -31,7 +31,7 @@
 
 Release 附件由 GitHub Actions 在全新运行器上从源码编译、测试、打包并发布，不上传本地编译包。附带 `BUILDINFO.json`、`SHA256SUMS.txt` 和 GitHub 构建来源证明，方便核对源码提交、依赖来源与产物。
 
-支持范围：0.2.0 已实测 Beat Saber 1.40.8，0.3.0 的 1.40.8 构建已通过自动检查；1.46.0 正在适配和实测，完成前不声明支持。不同游戏版本请使用对应安装包。
+支持范围：0.2.0 已实测 Beat Saber 1.40.8，0.3.1 的 1.40.8 构建已通过自动检查；1.46.0 正在适配和实测，完成前不声明支持。不同游戏版本请使用对应安装包。
 
 从源码构建后，也可运行 `./install.ps1 -GameDir '你的游戏目录'`。卸载时关闭游戏并移除这一份 DLL。换 DLL 后必须重新启动游戏。
 

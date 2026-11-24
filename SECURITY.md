@@ -14,7 +14,7 @@ The complete workflow is [.github/workflows/release.yml](.github/workflows/relea
 2. Fetches compile-only Beat Saber references from `beat-forge/beatsaber-stripped` at the exact commit in [ci/dependencies.json](ci/dependencies.json). These contain type signatures with implementations stripped; they are not included in the release ZIP.
 3. Uses a pinned Microsoft .NET SDK. Only the test harness targets modern .NET; the game plugin remains .NET Framework 4.7.2.
 4. Downloads the official BSIPA 4.3.7 release ZIP over HTTPS and checks its pinned SHA-256 **before extraction**. Only its Mono.Cecil metadata library is used to run checks; the installer is never executed. This avoids trying to execute stripped reference libraries.
-5. Compiles the plugin from source and runs state, HTTP and game-hook metadata checks. There are no NuGet package references in the plugin or test projects; SDK and reference sources are explicit.
+5. Compiles the plugin from source and runs state, HTTP and game-hook metadata checks. Implicit scanning of DLL candidates in the working directory is disabled: references resolve from explicit HintPaths and framework reference directories. There are no NuGet package references in the plugin or test projects; SDK and reference sources are explicit.
 6. Creates a ZIP with exactly one entry: `Plugins/SteamSongPresence.dll`. It rejects extra entries and verifies the embedded game/plugin versions against the assembly metadata. ZIP entry timestamps are fixed and compiler paths are normalized.
 7. Records source commit, workflow URL, SDK, runner image, reference commit, dependency hashes and output hashes in `BUILDINFO.json`, then generates `SHA256SUMS.txt`.
 8. Transfers only the verified outputs to a separate publishing job, generates signed GitHub artifact attestations and creates the GitHub Release.
@@ -28,13 +28,13 @@ No locally built binary is uploaded as a release asset, and no game assemblies, 
 Check the public workflow's source commit and successful checks. Compare the ZIP with `SHA256SUMS.txt`:
 
 ```powershell
-Get-FileHash ./SteamSongPresence-0.3.0-bs1.40.8.zip -Algorithm SHA256
+Get-FileHash ./SteamSongPresence-0.3.1-bs1.40.8.zip -Algorithm SHA256
 ```
 
 With the official GitHub CLI, verify its build provenance:
 
 ```sh
-gh attestation verify SteamSongPresence-0.3.0-bs1.40.8.zip --repo 1000Delta/SteamSongPresence
+gh attestation verify SteamSongPresence-0.3.1-bs1.40.8.zip --repo 1000Delta/SteamSongPresence
 ```
 
 Checksums establish file integrity. Attestations establish which repository/workflow produced a file; neither replaces code review or guarantees the absence of vulnerabilities.
