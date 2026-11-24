@@ -2,9 +2,11 @@ param(
     [string]$GameDir = "$env:USERPROFILE\BSManager\BSInstances\1.40.8",
     [ValidateSet('', '1.40.8', '1.46.0')][string]$TargetVersion = '',
     [string]$TestTargetFramework = 'net6.0',
-    [string]$CecilPath = ''
+    [string]$CecilPath = '',
+    [string]$BsipaDir = ''
 )
 $ErrorActionPreference = 'Stop'
+$GameDir = (Resolve-Path -LiteralPath $GameDir).ProviderPath
 $env:DOTNET_CLI_HOME = Join-Path $PSScriptRoot '.build-home'
 $env:DOTNET_CLI_TELEMETRY_OPTOUT = '1'
 $env:DOTNET_SKIP_FIRST_TIME_EXPERIENCE = '1'
@@ -22,9 +24,15 @@ $generatedDir = Join-Path $PSScriptRoot "obj\bs$gameVersion"
 New-Item -ItemType Directory -Path $generatedDir -Force | Out-Null
 $manifestPath = Join-Path $generatedDir 'manifest.json'
 [IO.File]::WriteAllText($manifestPath, ($metadata | ConvertTo-Json -Depth 5))
-dotnet build (Join-Path $PSScriptRoot 'SteamSongPresence.csproj') -c Release --nologo "-p:GameDir=$GameDir" "-p:TargetGameVersion=$gameVersion" "-p:ManifestPath=$manifestPath" "-p:PathMap=$PSScriptRoot=/_/SteamSongPresence" -p:ContinuousIntegrationBuild=true -p:UseSharedCompilation=false -p:RestoreIgnoreFailedSources=true
+$ipaLoader = Join-Path $GameDir 'Beat Saber_Data\Managed\IPA.Loader.dll'
+$modLibs = Join-Path $GameDir 'Libs'
+if ($BsipaDir) {
+    $ipaLoader = Join-Path $BsipaDir 'IPA\Data\Managed\IPA.Loader.dll'
+    $modLibs = Join-Path $BsipaDir 'IPA\Libs'
+}
+dotnet build (Join-Path $PSScriptRoot 'SteamSongPresence.csproj') -c Release --nologo "-p:GameDir=$GameDir" "-p:TargetGameVersion=$gameVersion" "-p:ManifestPath=$manifestPath" "-p:IpaLoaderPath=$ipaLoader" "-p:ModLibDir=$modLibs" "-p:PathMap=$PSScriptRoot=/_/SteamSongPresence" -p:ContinuousIntegrationBuild=true -p:UseSharedCompilation=false -p:RestoreIgnoreFailedSources=true
 if ($LASTEXITCODE -ne 0) { throw 'Plugin build failed.' }
-if (!$CecilPath) { $CecilPath = Join-Path $GameDir 'Libs\Mono.Cecil.dll' }
+if (!$CecilPath) { $CecilPath = Join-Path $modLibs 'Mono.Cecil.dll' }
 dotnet run --project (Join-Path $PSScriptRoot 'tests\SteamSongPresence.Tests.csproj') -c Release "-p:GameDir=$GameDir" "-p:TestTargetFramework=$TestTargetFramework" "-p:CecilPath=$CecilPath" -p:UseSharedCompilation=false -- $GameDir
 if ($LASTEXITCODE -ne 0) { throw 'Validation failed.' }
 $stage = Join-Path $PSScriptRoot "dist\bs$gameVersion"

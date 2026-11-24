@@ -26,7 +26,14 @@ Live test performed with v0.2.0 on an actual BSManager 1.40.8_7379 instance:
 
 The Steam public installation was identified from `globalgamemanagers` as 1.46.0_34060 / Unity 6000.3.19f1, build 26247017. A stale `BeatSaberVersion.txt` from an earlier BSIPA installation was disregarded.
 
-Compatibility changes in v0.3.0 account for the renamed Steamworks assembly and the new `BeatmapKey.characteristic` enum. Live testing is pending; 1.46.0 is not yet claimed as supported.
+Compatibility changes account for the renamed Steamworks assembly and the new `BeatmapKey.characteristic` enum. Live test completed with v0.3.1 on the actual Steam 1.46.0 installation using FPFC:
+
+- On the first launch, BSIPA migrated a plugin directory left over from an old version of the same Steam installation. This did not affect the separate BSManager 1.40.8 instance. Importing via `IPA/Pending/Plugins` after the migration allowed normal loading on restart.
+- Captured the custom song `[Super ONGEKI Music Pack] Random Access Emotions`, artist aran, Expert+ / Standard, and correctly reported its pause state and duration.
+- Game logs confirmed successful native Steam presence updates through Playing → Paused → Playing, including repeated resume transitions.
+- Steam's native playtime increased by two minutes. After exit, `Running=0`, no game process remained and port 6749 was no longer listening.
+- A separate return-to-menu transition was not captured in this live test; menu clearing was live-verified on 1.40.8 and covered by state checks.
+- v0.4.0 builds both game targets against pinned public references, using explicit BSIPA build dependencies. Both local public-reference builds passed 21 checks and package metadata checks. Public Actions runs record their actual results separately.
 
 ## Steam integration
 

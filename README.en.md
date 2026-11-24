@@ -1,6 +1,6 @@
 # Steam Song Presence
 
-**[Latest release](https://github.com/1000Delta/SteamSongPresence/releases/latest)** · **[Download for Beat Saber 1.40.8](https://github.com/1000Delta/SteamSongPresence/releases/download/v0.3.1/SteamSongPresence-0.3.1-bs1.40.8.zip)**
+**[Latest release](https://github.com/1000Delta/SteamSongPresence/releases/latest)** · **[Beat Saber 1.40.8](https://github.com/1000Delta/SteamSongPresence/releases/download/v0.4.0/SteamSongPresence-0.4.0-bs1.40.8.zip)** · **[Beat Saber 1.46.0](https://github.com/1000Delta/SteamSongPresence/releases/download/v0.4.0/SteamSongPresence-0.4.0-bs1.46.0.zip)**
 
 [Public build logs](https://github.com/1000Delta/SteamSongPresence/actions/workflows/release.yml) · [Build transparency and security](SECURITY.md)
 
@@ -20,8 +20,8 @@ Windows x64 / Steam / BSIPA. Official and custom song metadata are read from the
 
 | Game version | Status |
 | --- | --- |
-| 1.40.8 | v0.2.0 tested in game; Steam rendering, pause, menu clearing and native playtime verified |
-| 1.46.0 | v0.3.1 compatibility work and live testing in progress; not yet declared supported |
+| 1.40.8 | Steam rendering, pause, menu clearing and native playtime verified with v0.2.0 |
+| 1.46.0 | Song metadata, Steam presence updates, pause/resume, exit cleanup and native playtime verified with v0.3.1; requires BSIPA 4.3.7+ |
 
 ## Install
 
@@ -34,11 +34,13 @@ For BSManager, install into the instance you actually launch. Remove the DLL whi
 
 ### Import with BSManager
 
-Download the versioned release ZIP, select your **1.40.8 instance → Mods**, and drag the ZIP onto that page. Alternatively, use **⋮ → Import mods** and select the ZIP. Keep the ZIP intact: its `Plugins/SteamSongPresence.dll` layout is supported by BSManager's importer. Launch the game after import so BSIPA applies the pending installation.
+Download the matching release ZIP, select that **game instance → Mods**, and drag the ZIP onto the page. Alternatively, use **⋮ → Import mods** and select the ZIP. Keep the ZIP intact: its `Plugins/SteamSongPresence.dll` layout is supported by BSManager's importer. Launch the game after import so BSIPA applies the pending installation.
+
+After first installing BSIPA or upgrading a game directory, launch the game to the menu and exit once before importing this plugin. This lets the loader finish its version migration first. Different BSManager instances have separate plugin directories; install into each instance independently.
 
 Use the named installation asset, not GitHub's automatically generated **Source code** archives. See the [official BSManager import guide](https://github.com/Zagrios/bs-manager/wiki/install-mods-on-your-version). BSManager does not currently expose a general GitHub-mod installation deep link; this package uses its native ZIP import flow.
 
-Release assets are compiled, tested, packaged and published by GitHub Actions on clean hosted runners. Local binaries are not uploaded. `BUILDINFO.json`, `SHA256SUMS.txt` and signed GitHub artifact attestations identify the source revision, workflow, dependency inputs and output hashes.
+Release assets are compiled, tested, packaged and published by GitHub Actions on clean hosted runners. Local binaries are not uploaded. Per-game build reports, SHA-256 checksums and signed GitHub artifact attestations identify the source revision, workflow, dependency inputs and output hashes.
 
 ## How it works
 

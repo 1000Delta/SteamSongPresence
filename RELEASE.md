@@ -1,15 +1,13 @@
 Steam song, difficulty and pause status using the existing game session. No extra login or companion application.
 
-This patch restricts assembly resolution to explicit dependency paths and framework references, preventing unrelated DLLs elsewhere in a local working directory from becoming compiler inputs. It retains the source-built release workflow with pinned inputs and build provenance.
+**Separate installation packages: Beat Saber 1.40.8 and 1.46.0 / Steam / Windows x64. Do not mix the builds.**
 
-**Installation package: Beat Saber 1.40.8 / Steam / Windows x64.**
+Download the ZIP matching your game version. In BSManager, choose that **game instance → Mods**, then drag the ZIP onto the page or select **⋮ → Import mods**. Keep the ZIP intact and launch the game after import. BSIPA must already be installed; 1.46.0 requires BSIPA 4.3.7+. After first setting up BSIPA or upgrading a directory, launch to the menu and exit once before importing this plugin.
 
-Download `SteamSongPresence-0.3.1-bs1.40.8.zip` below. In BSManager, choose **1.40.8 → Mods**, then drag the ZIP onto the page or select **⋮ → Import mods**. Keep the ZIP intact and launch the game after import. BSIPA must already be installed. Do not use the automatically generated Source code archives as installation packages.
+The ZIP contains only `Plugins/SteamSongPresence.dll`. Do not use the automatically generated Source code archives as installation packages.
 
-The ZIP contains only `Plugins/SteamSongPresence.dll`. It is compiled and packaged from the tagged source by the public **Build and release** GitHub Actions workflow. `BUILDINFO.json` records source, build URL, SDK, pinned references and hashes. `SHA256SUMS.txt` provides integrity checks, and GitHub artifact attestations bind the files to their workflow run.
+Both packages are independently compiled and tested from the tagged source by the public **Build and release** Actions workflow. Each has a versioned `BUILDINFO-bs<game-version>.json` and `SHA256SUMS-bs<game-version>.txt`. GitHub artifact attestations bind the assets to the public workflow run, source commit and hashes. Actions and dependencies are pinned; no locally built binary is uploaded.
 
-Build checks cover Unicode handling, state transitions, local diagnostics and target game hook metadata. Steam status rendering, pause, menu cleanup and native playtime were live-verified with v0.2.0 on 1.40.8; that behavior is retained in this build. See [validation details](https://github.com/1000Delta/SteamSongPresence/blob/main/VALIDATION.md).
+1.46.0 was live-tested with v0.3.1: custom song metadata, Steam presence updates, repeated pause/resume, exit cleanup and native playtime. 1.40.8 rendering, pause, menu cleanup and native playtime were live-tested with v0.2.0. The capture/presence behavior is retained in v0.4.0. Each target also runs 21 checks and package metadata checks; see [validation details](https://github.com/1000Delta/SteamSongPresence/blob/main/VALIDATION.md) and [build transparency](https://github.com/1000Delta/SteamSongPresence/blob/main/SECURITY.md).
 
-**1.46.0 live testing is pending. This release does not include a 1.46.0 binary.**
-
-中文：下载下方带有 `bs1.40.8` 的 ZIP，在 BSManager 选择 **1.40.8 → Mods（模组）**，直接拖入 ZIP 或通过 **⋮ → Import mods（导入模组）** 选择，无需手动解压。构建日志、源码提交、依赖及校验值均公开；安装包由 Actions 从源码生成。
+中文：按游戏版本下载对应 ZIP，在 BSManager 选择对应实例的 **Mods（模组）**，直接拖入 ZIP 或通过 **⋮ → Import mods（导入模组）** 选择，无需手动解压。首次安装 BSIPA 或升级游戏目录后，先运行到主菜单并退出一次，再导入本插件。两个版本分别由 Actions 从源码编译，依赖、日志、校验值和构建来源证明公开。

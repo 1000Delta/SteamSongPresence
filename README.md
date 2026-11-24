@@ -2,7 +2,7 @@
 
 [English documentation](README.en.md)
 
-**[下载最新版（GitHub Releases）](https://github.com/1000Delta/SteamSongPresence/releases/latest)** · **[下载 1.40.8 安装包](https://github.com/1000Delta/SteamSongPresence/releases/download/v0.3.1/SteamSongPresence-0.3.1-bs1.40.8.zip)**
+**[GitHub Releases](https://github.com/1000Delta/SteamSongPresence/releases/latest)** · **[1.40.8 安装包](https://github.com/1000Delta/SteamSongPresence/releases/download/v0.4.0/SteamSongPresence-0.4.0-bs1.40.8.zip)** · **[1.46.0 安装包](https://github.com/1000Delta/SteamSongPresence/releases/download/v0.4.0/SteamSongPresence-0.4.0-bs1.46.0.zip)**
 
 [公开构建记录](https://github.com/1000Delta/SteamSongPresence/actions/workflows/release.yml) · [构建流程与安全说明](SECURITY.md)
 
@@ -14,24 +14,26 @@
 
 ## 安装
 
-需要 Windows x64、Beat Saber 1.40.8、已启用的 BSIPA。复用游戏现有的 Harmony 和 Newtonsoft.Json，不附带游戏程序集。
+需要 Windows x64 / Steam、Beat Saber 1.40.8 或 1.46.0、已启用的 BSIPA（1.46.0 需要 4.3.7+）。复用 BSIPA 的 Harmony 和 Newtonsoft.Json，不附带游戏程序集。
 
 1. 退出 Beat Saber。
-2. 将安装包内 `Plugins/SteamSongPresence.dll` 放到**你实际启动的 1.40.8 实例**的 `Plugins` 文件夹。
-3. 从 BSManager 启动游戏，Steam 客户端保持已登录。
+2. 下载对应游戏版本的 ZIP，将其中 `Plugins/SteamSongPresence.dll` 放到**你实际启动的实例**的 `Plugins` 文件夹。
+3. 从 Steam 或 BSManager 启动选定实例，Steam 客户端保持已登录。
 
 ### 使用 BSManager 导入
 
 1. 下载上方 Release 的 ZIP 安装包，保留 ZIP 格式。
-2. 在 BSManager 中选择 **1.40.8 实例 → Mods（模组）**。
+2. 在 BSManager 中选择与安装包对应的 **游戏实例 → Mods（模组）**。
 3. 将 ZIP 拖入模组页面，或点击 **⋮ → Import mods（导入模组）** 并选择 ZIP。
 4. 导入完成后启动游戏。BSIPA 会应用待安装的插件。
 
 安装包采用 BSManager 原生支持的 `Plugins/SteamSongPresence.dll` 结构，无需手动解压或运行安装脚本。GitHub 自动生成的 **Source code** ZIP 是源码，请下载名称含有游戏版本的安装包。参考 [BSManager 官方导入说明](https://github.com/Zagrios/bs-manager/wiki/install-mods-on-your-version)。
 
-Release 附件由 GitHub Actions 在全新运行器上从源码编译、测试、打包并发布，不上传本地编译包。附带 `BUILDINFO.json`、`SHA256SUMS.txt` 和 GitHub 构建来源证明，方便核对源码提交、依赖来源与产物。
+Release 附件由 GitHub Actions 在全新运行器上从源码编译、测试、打包并发布，不上传本地编译包。每个游戏版本附带独立的构建报告、SHA-256 校验值和 GitHub 构建来源证明，方便核对源码提交、依赖来源与产物。
 
-支持范围：0.2.0 已实测 Beat Saber 1.40.8，0.3.1 的 1.40.8 构建已通过自动检查；1.46.0 正在适配和实测，完成前不声明支持。不同游戏版本请使用对应安装包。
+两个版本使用独立安装包，请勿混用。首次安装 BSIPA 或切换游戏版本后，先运行游戏到主菜单并退出，再导入本插件，避免被加载器的首次版本迁移移入旧插件目录。BSManager 的不同实例分别安装，不会共享插件文件。
+
+实测范围：1.40.8 的歌名、暂停、回菜单和原生时长记录；1.46.0 的歌名、暂停/恢复、退出清理和原生时长记录。详情见 [VALIDATION.md](VALIDATION.md)。
 
 从源码构建后，也可运行 `./install.ps1 -GameDir '你的游戏目录'`。卸载时关闭游戏并移除这一份 DLL。换 DLL 后必须重新启动游戏。
 

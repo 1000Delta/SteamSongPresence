@@ -4,9 +4,11 @@
     <LangVersion>10</LangVersion>
     <Nullable>enable</Nullable>
     <AssemblyName>SteamSongPresence</AssemblyName>
-    <Version>0.3.1</Version>
+    <Version>0.4.0</Version>
     <PlatformTarget>x64</PlatformTarget>
     <GameDir Condition="'$(GameDir)' == ''">$(USERPROFILE)\BSManager\BSInstances\1.40.8</GameDir>
+    <IpaLoaderPath Condition="'$(IpaLoaderPath)' == ''">$(GameDir)\Beat Saber_Data\Managed\IPA.Loader.dll</IpaLoaderPath>
+    <ModLibDir Condition="'$(ModLibDir)' == ''">$(GameDir)\Libs</ModLibDir>
     <TargetGameVersion Condition="'$(TargetGameVersion)' == ''">1.40.8</TargetGameVersion>
     <ManifestPath Condition="'$(ManifestPath)' == ''">manifest.json</ManifestPath>
     <OutputPath>bin\$(Configuration)\bs$(TargetGameVersion)\</OutputPath>
@@ -21,7 +23,7 @@
   <ItemGroup>
     <Compile Include="src\*.cs" />
     <EmbeddedResource Include="$(ManifestPath)" LogicalName="SteamSongPresence.manifest.json" />
-    <Reference Include="IPA.Loader"><HintPath>$(GameDir)\Beat Saber_Data\Managed\IPA.Loader.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="IPA.Loader"><HintPath>$(IpaLoaderPath)</HintPath><Private>false</Private></Reference>
     <Reference Include="Main"><HintPath>$(GameDir)\Beat Saber_Data\Managed\Main.dll</HintPath><Private>false</Private></Reference>
     <Reference Include="Core"><HintPath>$(GameDir)\Beat Saber_Data\Managed\Core.dll</HintPath><Private>false</Private></Reference>
     <Reference Include="DataModels"><HintPath>$(GameDir)\Beat Saber_Data\Managed\DataModels.dll</HintPath><Private>false</Private></Reference>
@@ -33,7 +35,7 @@
     <Reference Include="UnityEngine.CoreModule"><HintPath>$(GameDir)\Beat Saber_Data\Managed\UnityEngine.CoreModule.dll</HintPath><Private>false</Private></Reference>
     <Reference Include="Steamworks.NET" Condition="Exists('$(GameDir)\Beat Saber_Data\Managed\Steamworks.NET.dll')"><HintPath>$(GameDir)\Beat Saber_Data\Managed\Steamworks.NET.dll</HintPath><Private>false</Private></Reference>
     <Reference Include="com.rlabrecque.steamworks.net" Condition="!Exists('$(GameDir)\Beat Saber_Data\Managed\Steamworks.NET.dll')"><HintPath>$(GameDir)\Beat Saber_Data\Managed\com.rlabrecque.steamworks.net.dll</HintPath><Private>false</Private></Reference>
-    <Reference Include="0Harmony"><HintPath>$(GameDir)\Libs\0Harmony.dll</HintPath><Private>false</Private></Reference>
-    <Reference Include="Newtonsoft.Json"><HintPath>$(GameDir)\Libs\Newtonsoft.Json.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="0Harmony"><HintPath>$(ModLibDir)\0Harmony.dll</HintPath><Private>false</Private></Reference>
+    <Reference Include="Newtonsoft.Json"><HintPath>$(ModLibDir)\Newtonsoft.Json.dll</HintPath><Private>false</Private></Reference>
   </ItemGroup>
 </Project>

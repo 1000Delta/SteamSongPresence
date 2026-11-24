@@ -11,12 +11,12 @@ The source is public and unobfuscated. Install only a package for a supported ga
 The complete workflow is [.github/workflows/release.yml](.github/workflows/release.yml). It runs on GitHub-hosted runners and:
 
 1. Checks out the plugin source at the triggering commit.
-2. Fetches compile-only Beat Saber references from `beat-forge/beatsaber-stripped` at the exact commit in [ci/dependencies.json](ci/dependencies.json). These contain type signatures with implementations stripped; they are not included in the release ZIP.
+2. Fetches compile-only references for each game target from `beat-forge/beatsaber-stripped` (1.40.8) or `nicoco007/BeatSaberReferenceAssemblies` (1.46.0), at exact commits in [ci/dependencies.json](ci/dependencies.json). These contain type signatures with implementations stripped; they are not included in release ZIPs.
 3. Uses a pinned Microsoft .NET SDK. Only the test harness targets modern .NET; the game plugin remains .NET Framework 4.7.2.
-4. Downloads the official BSIPA 4.3.7 release ZIP over HTTPS and checks its pinned SHA-256 **before extraction**. Only its Mono.Cecil metadata library is used to run checks; the installer is never executed. This avoids trying to execute stripped reference libraries.
+4. Downloads the official BSIPA 4.3.7 release ZIP over HTTPS and checks its pinned SHA-256 **before extraction**. Its IPA, Harmony and JSON libraries are explicit compiler references; its Mono.Cecil metadata library runs the checks. The installer is never executed. The checked-out game reference trees remain unchanged.
 5. Compiles the plugin from source and runs state, HTTP and game-hook metadata checks. Implicit scanning of DLL candidates in the working directory is disabled: references resolve from explicit HintPaths and framework reference directories. There are no NuGet package references in the plugin or test projects; SDK and reference sources are explicit.
 6. Creates a ZIP with exactly one entry: `Plugins/SteamSongPresence.dll`. It rejects extra entries and verifies the embedded game/plugin versions against the assembly metadata. ZIP entry timestamps are fixed and compiler paths are normalized.
-7. Records source commit, workflow URL, SDK, runner image, reference commit, dependency hashes and output hashes in `BUILDINFO.json`, then generates `SHA256SUMS.txt`.
+7. Records source commit, workflow URL, SDK, runner image, reference commit, dependency hashes and output hashes in a separate `BUILDINFO-bs<game-version>.json` for each build, then generates `SHA256SUMS-bs<game-version>.txt`.
 8. Transfers only the verified outputs to a separate publishing job, generates signed GitHub artifact attestations and creates the GitHub Release.
 
 Third-party Actions are pinned to full commit hashes. The build job has read-only repository permissions. Only the separate publishing job has release and attestation permissions; pull requests cannot publish. No personal access token or additional repository secret is required. Releases fail rather than overwrite an existing release with the same version.
@@ -25,16 +25,16 @@ No locally built binary is uploaded as a release asset, and no game assemblies, 
 
 ## Verify a download
 
-Check the public workflow's source commit and successful checks. Compare the ZIP with `SHA256SUMS.txt`:
+Check the public workflow's source commit and successful checks. Compare the ZIP with its matching `SHA256SUMS-bs<game-version>.txt`:
 
 ```powershell
-Get-FileHash ./SteamSongPresence-0.3.1-bs1.40.8.zip -Algorithm SHA256
+Get-FileHash ./SteamSongPresence-0.4.0-bs1.46.0.zip -Algorithm SHA256
 ```
 
 With the official GitHub CLI, verify its build provenance:
 
 ```sh
-gh attestation verify SteamSongPresence-0.3.1-bs1.40.8.zip --repo 1000Delta/SteamSongPresence
+gh attestation verify SteamSongPresence-0.4.0-bs1.46.0.zip --repo 1000Delta/SteamSongPresence
 ```
 
 Checksums establish file integrity. Attestations establish which repository/workflow produced a file; neither replaces code review or guarantees the absence of vulnerabilities.
@@ -45,12 +45,15 @@ Check out the source commit listed in `BUILDINFO.json`, install the SDK version 
 
 ```powershell
 $deps = Get-Content ./ci/dependencies.json -Raw | ConvertFrom-Json
-git clone --no-checkout --filter=blob:none "https://github.com/$($deps.referenceRepository).git" Refs
-git -C Refs checkout --detach $deps.referenceCommit
+$gameVersion = '1.46.0'
+$target = $deps.targets.PSObject.Properties[$gameVersion].Value
+git clone --no-checkout --filter=blob:none "https://github.com/$($target.referenceRepository).git" Refs
+git -C Refs checkout --detach $target.referenceCommit
 $cecil = ./ci/prepare-test-dependencies.ps1
-$refs = Join-Path (Get-Location) Refs
-./build.ps1 -GameDir $refs -TargetVersion $deps.gameVersion -TestTargetFramework net10.0 -CecilPath $cecil
-./ci/verify-package.ps1 -GameDir $refs -CecilPath $cecil
+$refs = Join-Path (Join-Path (Get-Location) Refs) $target.subdirectory
+$bsipa = Join-Path (Get-Location) '.ci-deps/BSIPA-4.3.7'
+./build.ps1 -GameDir $refs -TargetVersion $gameVersion -TestTargetFramework net10.0 -CecilPath $cecil -BsipaDir $bsipa
+./ci/verify-package.ps1 -GameDir $refs -GameVersion $gameVersion -CecilPath $cecil -BsipaDir $bsipa
 ```
 
 The project does not promise byte-identical builds across different SDKs or operating systems. `BUILDINFO.json` intentionally records the specific workflow run. Compare the plugin/ZIP hashes from the same source and toolchain, rather than expecting that report itself to be identical.

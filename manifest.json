@@ -3,7 +3,7 @@
   "id": "SteamSongPresence",
   "name": "Steam Song Presence",
   "author": "1000Delta",
-  "version": "0.3.1",
+  "version": "0.4.0",
   "gameVersion": "1.40.8",
   "description": "Shows the current song and difficulty in the Steam friends list using Beat Saber's official dynamic presence template and existing Steam login. Supports custom songs and pause state. No companion application required.",
   "dependsOn": { "BSIPA": "^4.3.5" },
