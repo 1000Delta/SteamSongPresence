@@ -17,14 +17,15 @@ In menus
 | Beat Saber | 本项目定位 | 安装包 |
 | --- | --- | --- |
 | 1.40.8 | 推荐版本，适合在 BSManager 中固定使用 | [SteamSongPresence-0.5.0-bs1.40.8.zip](https://github.com/1000Delta/SteamSongPresence/releases/download/v0.5.0/SteamSongPresence-0.5.0-bs1.40.8.zip) |
+| 1.46.0 | Steam 官方最新版（2026-11-25 核对） | [SteamSongPresence-0.5.0-bs1.46.0.zip](https://github.com/1000Delta/SteamSongPresence/releases/download/v0.5.0/SteamSongPresence-0.5.0-bs1.46.0.zip) |
 
-推荐版本是本项目的选择。当前发布和 BeatMods 送审范围为 1.40.8。
+推荐版本是本项目的选择。两个目标分别打包并完成实机回归；其他游戏版本暂不在支持范围内。GitHub v0.5.0 保留为预发布候选包，BeatMods 审核状态以项目页面为准。
 
 v0.5.0 的实机回归和发布状态见 [VALIDATION.md](VALIDATION.md)。
 
 ## 安装
 
-环境：Windows x64、Steam、Beat Saber 1.40.8 和 BSIPA 4.3.5+。Harmony 使用 BSIPA 随附版本。
+环境：Windows x64、Steam。1.40.8 使用 BSIPA 4.3.5+，1.46.0 使用 BSIPA 4.3.7+。Harmony 使用 BSIPA 随附版本。
 
 1. 退出 Beat Saber，下载对应游戏版本的安装 ZIP。
 2. 在 BSManager 选择对应的 **游戏实例 → Mods（模组）**。
@@ -65,6 +66,6 @@ Unity 回调、Steam 更新和退出清理使用异常保护。清理按独立�
 
 构建脚本读取实际游戏版本，选择对应引用并嵌入匹配的 manifest。自动检查覆盖状态转换、UTF-8 长度、异常隔离、Steam 拒绝和恢复、强制刷新重试，以及游戏补丁目标。
 
-GitHub Actions 在托管运行器上编译、检查并打包。当前发布 1.40.8 安装包，ZIP 仅包含 `Plugins/SteamSongPresence.dll`，另附构建报告、SHA-256 和构建来源证明。候选包经过实机验证后，使用同一份附件正式发布并送审 BeatMods。
+GitHub Actions 在托管运行器上分别为两个目标编译、检查并打包。ZIP 仅包含 `Plugins/SteamSongPresence.dll`，另附构建报告、SHA-256 和构建来源证明。BeatMods 使用与实机验证相同的 Actions 附件。
 
 [构建流程与安全说明](SECURITY.md) · [验证范围](VALIDATION.md) · [MIT 许可证](LICENSE)
